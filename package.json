@@ -1,0 +1,16 @@
+{
+  "name": "scraper-mercadolivre",
+  "version": "1.0.0",
+  "description": "Scraper de preços do Mercado Livre — monitora produtos e salva histórico em CSV",
+  "type": "module",
+  "main": "scraper.js",
+  "scripts": {
+    "start": "node scraper.js",
+    "watch": "node watch.js"
+  },
+  "author": "Pietro Arnhold",
+  "license": "MIT",
+  "dependencies": {
+    "playwright": "^1.48.0"
+  }
+}

@@ -1,0 +1,4 @@
+# Cole 1 URL de produto do Mercado Livre por linha.
+# Linhas começando com # são ignoradas.
+
+https://www.mercadolivre.com.br/notebook-lenovo-ideapad-3i-intel-core-i5-1235u-8gb-256gb-ssd-156-fhd-windows-11/p/MLB22573612
