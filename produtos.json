@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Kabum - Produto 1",
+    "url": "https://www.kabum.com.br/produto/489498",
+    "priceSelectors": [".finalPrice", "h4[itemprop='price']"],
+    "titleSelectors": ["h1", ".nameCard"]
+  },
+  {
+    "name": "Kabum - Produto 2",
+    "url": "https://www.kabum.com.br/produto/112292",
+    "priceSelectors": [".finalPrice", "h4[itemprop='price']"],
+    "titleSelectors": ["h1", ".nameCard"]
+  }
+]

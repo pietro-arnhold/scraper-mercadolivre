@@ -1,66 +1,93 @@
-# Scraper Mercado Livre
+# 🛒 Scraper de Preços - E-commerce BR
 
-Scraper que extrai **preço, vendedor e disponibilidade** de qualquer produto do Mercado Livre e salva o histórico em CSV. Útil pra monitorar variação de preço ao longo do tempo (alerta de promoção, análise de concorrência, dropshipping).
+Scraper que extrai **preço e título** de produtos em lojas brasileiras e salva o histórico em CSV. Monitore variação de preço, alerta de promoção, análise de concorrência.
 
-## O que ele faz
+![Node.js](https://img.shields.io/badge/Node.js-18+-green) ![License](https://img.shields.io/badge/license-MIT-blue)
 
-- Lê uma lista de URLs de `produtos.txt`
-- Acessa cada produto com navegador headless (Playwright)
-- Extrai: título, preço, vendedor, disponibilidade
+## O que faz
+
+- Lê uma lista de produtos configurável (`produtos.json`)
+- Acessa cada página e extrai preço via seletores CSS, JSON-LD ou JSON inline
 - Salva tudo em `historico-precos.csv` com timestamp
+- Funciona com qualquer site que retorne HTML (Kabum, Amazon, Submarino, etc.)
 - Pode rodar via cron pra coletar dados a cada X horas
+
+## Casos de uso
+
+| Cenário | Como usar |
+|---|---|
+| 🏷️ **Alerta de promoção** | Monitore preços e veja quando caíram |
+| 📊 **Análise de concorrência** | Compare preços entre lojas |
+| 📈 **Histórico de preços** | Gere CSV com evolução do preço ao longo do tempo |
+| 🛍️ **Dropshipping** | Acompanhe preço de custo dos fornecedores |
 
 ## Stack
 
-- **Node.js 18+** (ESM)
-- **Playwright** (navegação headless, lida com JavaScript dinâmico)
+- **Node.js 18+** (ESM, usa `fetch` nativo)
+- **jsdom** — parsing de HTML
+- Sem navegador headless = leve e rápido
 
 ## Como rodar
 
 ```bash
-# 1. Instalar dependências
+git clone https://github.com/pietro-arnhold/scraper-mercadolivre.git
+cd scraper-mercadolivre
 npm install
-npx playwright install chromium
+```
 
-# 2. Editar produtos.txt — colar 1 URL por linha
+Edite `produtos.json` com os produtos que quer monitorar:
 
-# 3. Executar
+```json
+[
+  {
+    "name": "Mouse Gamer - Kabum",
+    "url": "https://www.kabum.com.br/produto/489498",
+    "priceSelectors": [".finalPrice", "h4[itemprop='price']"],
+    "titleSelectors": ["h1", ".nameCard"]
+  }
+]
+```
+
+Rode:
+
+```bash
 npm start
 ```
 
-Saída no terminal:
+Saída:
 
 ```
-→ https://www.mercadolivre.com.br/...
-  ✓ Notebook Lenovo IdeaPad 3i Intel Core i5... — R$ 3499.00
+→ Mouse Gamer - Kabum
+  ✓ Mouse Gamer Redragon Cobra M711 RGB, 10000 DPI
+    Preço: R$ 103.55
 
+✅ 1 sucesso | ❌ 0 erros
 Resultado salvo em ./historico-precos.csv
 ```
 
-E o CSV gerado:
+## Como encontrar os seletores
 
-```csv
-timestamp,url,titulo,preco,vendedor,disponivel,estoque
-2026-05-22T14:32:01.234Z,https://...,"Notebook Lenovo IdeaPad 3i",3499.00,"LENOVO BRASIL",true,"Estoque disponível"
-```
+1. Abra o produto no Chrome
+2. Clique com botão direito no preço → **Inspecionar**
+3. Copie a classe CSS do elemento (ex: `.finalPrice`)
+4. Coloque no campo `priceSelectors` do `produtos.json`
 
-## Agendar com cron (Linux/Mac)
+O scraper também tenta automaticamente extrair via JSON-LD e JSON inline — muitos sites já funcionam sem configurar seletores.
 
-Pra rodar a cada hora:
+## Agendar execução automática
 
 ```bash
+# Windows (Agendador de Tarefas) ou Linux/Mac (cron):
 crontab -e
-# adicionar:
-0 * * * * cd /caminho/scraper-mercadolivre && /usr/bin/node scraper.js >> run.log 2>&1
+0 * * * * cd /caminho/scraper-mercadolivre && node scraper.js >> run.log 2>&1
 ```
 
-## Customizações comuns
+## Tecnologias
 
-- **Outro marketplace** (Amazon, Magalu, Shopee): trocar os seletores no `scrapeProduct()` — estrutura geral idêntica
-- **Alerta por email/Telegram quando preço cair X%:** comparar último valor do CSV antes de inserir nova linha
-- **Salvar em banco** (Postgres/SQLite) ao invés de CSV: trocar `appendRow()`
+- **Node.js** — runtime com fetch nativo
+- **jsdom** — parsing HTML server-side
+- **CSV** — formato simples, abre no Excel/Sheets
 
-## Sobre
+## Licença
 
-Projeto de portfólio mostrando scraping resiliente com Playwright.
-Disponível pra customização sob demanda — contato: [Workana](#) | GitHub: [@pietro-arnhold](https://github.com/pietro-arnhold)
+MIT — use como quiser.

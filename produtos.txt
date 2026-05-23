@@ -1,4 +1,8 @@
-# Cole 1 URL de produto do Mercado Livre por linha.
+# Cole URLs do Mercado Livre ou termos de busca, 1 por linha.
 # Linhas começando com # são ignoradas.
 
+# Por URL com ID do produto:
 https://www.mercadolivre.com.br/notebook-lenovo-ideapad-3i-intel-core-i5-1235u-8gb-256gb-ssd-156-fhd-windows-11/p/MLB22573612
+
+# Ou por termo de busca:
+notebook lenovo ideapad
